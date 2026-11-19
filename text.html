@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taalai Kabylov: A workshop without walls (text version)</title>
+<meta name="description" content="The text version: eleven stops on a snowy slope in Kyrgyzstan, what I have been building and who it was for.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Taalai Kabylov: A workshop without walls">
+<meta property="og:description" content="Eleven stops on a snowy slope in Kyrgyzstan: what I have been building, and who it was for.">
+<meta property="og:image" content="https://taalaikabylov.xyz/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500&family=Prata&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* layout: one quiet reading column, numbered stops, photos as archive prints. Same dusk as the 3D world. */
+  color-scheme: dark;
+  --dusk:#0d1222;
+  --ink:#eceef6;
+  --ink-dim:#a4a9bd;
+  --lamp:#f0b06a;
+  --paper:#efeadf;
+  --line:rgba(236,238,246,.16);
+  --display:"Prata","Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --body:"Golos Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--dusk);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+main{max-width:40rem;margin:0 auto;padding:28px 20px 80px}
+header{display:flex;flex-direction:column;gap:10px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px}
+a{color:var(--lamp)}
+.top a,.top button{min-height:44px;display:inline-flex;align-items:center}
+.top button{min-width:44px;justify-content:center;border:1px solid var(--line);border-radius:22px;background:none;color:var(--ink-dim);font:500 12px var(--body);letter-spacing:.08em;cursor:pointer}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,8vw,52px);line-height:1.05;margin:14px 0 0;text-wrap:balance}
+.tag{font-family:var(--display);color:var(--lamp);font-size:20px;margin:0}
+.own{margin:8px 0 0}
+section{padding:30px 0;border-bottom:1px solid var(--line)}
+.num{font-size:12px;letter-spacing:.14em;color:var(--lamp);font-variant-numeric:tabular-nums}
+h2{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.2;margin:4px 0 10px;text-wrap:balance}
+h3{font-family:var(--display);font-weight:400;font-size:19px;margin:22px 0 6px}
+p{margin:0 0 .6em;max-width:65ch}
+figure{margin:16px 0 14px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+figure img,figure video{display:block;max-width:100%;height:auto;border:6px solid var(--paper);box-shadow:0 3px 14px rgba(0,0,0,.45);background:#2a2d3a}
+figcaption{font-size:12px;letter-spacing:.1em;font-variant-caps:all-small-caps;color:var(--ink-dim)}
+footer{padding-top:24px;font-size:13px;color:var(--ink-dim)}
+:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="top"><a id="to3d" href="index.html">Open the 3D world</a></div>
+    <h1 id="name">Taalai Kabylov</h1>
+    <p class="tag" id="tag">A workshop without walls</p>
+    <p class="own" id="own" hidden></p>
+  </header>
+  <div id="stops"></div>
+  <footer id="credit"></footer>
+</main>
+<script src="data.js"></script>
+<script>
+(function(){
+"use strict";
+var S=window.SITE, lang=S.pickLang(), $=function(id){return document.getElementById(id);};
+function el(tag,text,cls){ var e=document.createElement(tag); if(text!=null) e.textContent=text; if(cls) e.className=cls; return e; }
+function two(n){ return (n<10?"0":"")+n; }
+function block(parent,id,headTag){
+  var it=S.TEXT[lang].items[id]; parent.appendChild(el(headTag,it[0]));
+  (S.PHOTOS[id]||[]).slice(0,3).forEach(function(p){
+    var f=el("figure");
+    if(p.video){ var v=document.createElement("video"); v.controls=true; v.muted=true; v.loop=true; v.playsInline=true; v.setAttribute("playsinline",""); v.preload="none"; v.poster=p.poster; v.src=p.src; v.setAttribute("aria-label",(p.alt&&p.alt[lang])||""); f.appendChild(v); }
+    else { var im=document.createElement("img"); im.loading="lazy"; im.decoding="async"; if(p.w){ im.width=p.w; im.height=p.h; }
+    im.alt=(p.alt&&p.alt[lang])||""; im.sizes="(min-width:680px) 600px, 92vw"; im.srcset=S.small(p.src)+" 800w, "+p.src+" 1600w"; im.src=p.src;
+    im.onerror=function(){ if(im.srcset){ im.removeAttribute("srcset"); im.src=p.src; } };
+    f.appendChild(im); } var c=(p.caption&&p.caption[lang])||"", d=p.date||"", cap=c&&d?c+" · "+d:(c||d); if(cap) f.appendChild(el("figcaption",cap)); parent.appendChild(f); });
+  it[1].forEach(function(t){ parent.appendChild(el("p",t)); });
+}
+function render(){
+  var ui=S.TEXT[lang].ui, box=$("stops"); document.documentElement.lang=lang; box.textContent="";
+  $("name").textContent=ui.name; $("tag").textContent=ui.tagline; $("to3d").textContent=ui.open3d; $("to3d").href="index.html";
+  var own=(S.INTRO[lang]||"").trim(); $("own").hidden=!own; $("own").textContent=own; $("credit").textContent=S.CREDIT[lang]||"";
+  var last=0; S.ITEMS.forEach(function(i){ if(i.stop!=null) last=i.stop; });
+  var sec=null;
+  S.ITEMS.forEach(function(i){
+    if(i.id==="overview") return;
+    if(i.stop!=null){ sec=el("section"); sec.appendChild(el("div",two(i.stop)+" / "+two(last),"num")); block(sec,i.id,"h2"); box.appendChild(sec); }
+    else if(sec) block(sec,i.id,"h3");
+  });
+}
+render();
+})();
+</script>
+</body>
+</html>

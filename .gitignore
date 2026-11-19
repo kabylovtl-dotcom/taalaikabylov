@@ -1,0 +1,5 @@
+photos-raw/*
+!photos-raw/.gitkeep
+node_modules/
+.claude/
+.DS_Store
